@@ -99,6 +99,7 @@ const Habit = (() => {
       <div class="card"><strong>Session journal</strong>${history.slice(-12).reverse().map(s=>`<div class="session-row"><div><b>${escape(s.title)}</b><div class="quiet">${escape(s.date)} · ${Math.round(s.activeSeconds)}s movement · ${s.steps.length} completed steps${s.effort?' · '+escape(s.effort):''}${s.discomfort==='yes'?' · discomfort reported':''}</div></div><button data-remove-session="${escape(s.id)}">Remove record</button></div>`).join('')||'<p class="quiet">Finish a guided session to see it here. A short session counts.</p>'}</div>`;
     const story=document.createElement('p');story.className='quiet';story.textContent=boxingStory;$('habitProgress').firstElementChild.append(story);
     document.querySelectorAll('[data-remove-session]').forEach(b=>b.onclick=()=>{if(confirm('Remove this session record? This cannot be undone.')){persist('habitSessions',sessions().filter(s=>s.id!==b.dataset.removeSession));refresh();}});
+    document.dispatchEvent(new Event('habitupdated'));
   }
   function checkpoint() { if(run) persist('habitDraft',{...run,running:false}); }
   function start() {
@@ -194,7 +195,7 @@ const Habit = (() => {
   window.addEventListener('load',()=>{
     refresh();
     document.querySelector('footer').textContent='Body Tracker 3 · Small steps, steady progress';
-    document.querySelector('#settings .small:last-child').textContent='App version 3.0.0';
+    document.getElementById('appVersion').textContent='Version 3.1.0';
     document.querySelector('[data-tab="progress"]').addEventListener('click',renderHistory);
   });
   return {refresh,candidates,activeDates,weekDates,boxingComplete,isActive:()=>!!run,escape};

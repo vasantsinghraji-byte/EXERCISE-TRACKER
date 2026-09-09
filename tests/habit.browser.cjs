@@ -69,6 +69,36 @@ const server=http.createServer((req,res)=>{
     await page.click('[data-tab="today"]');
     await page.setViewportSize({width:1280,height:900});
     await page.screenshot({path:path.join(root,'tests','today-desktop.png'),fullPage:true});
+    // New UI: inspect every section at phone, tablet, and desktop sizes.
+    for(const width of [390,820,1440]){
+      await page.setViewportSize({width,height:900});
+      for(const tab of ['today','boxing','progress','nutrition','settings']){
+        await page.click(`[data-tab="${tab}"]`);
+        assert.equal(await page.locator(`[data-tab="${tab}"]`).getAttribute('aria-selected'),'true');
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`${tab} fits at ${width}px`);
+        await page.screenshot({path:path.join(root,'tests',`ui-${tab}-${width}.png`),fullPage:true});
+      }
+    }
+    await page.click('[data-tab="nutrition"]');
+    await page.click('[data-food="6"]');
+    assert.equal(await page.locator('#qty').inputValue(),'200');
+    assert.equal(await page.locator('#foodPreview').innerText(),'6.4 g');
+    await page.click('.food-entry .button-dark');
+    assert.equal(await page.locator('#proteinTotal').innerText(),'6.4 g');
+    assert.match(await page.locator('#foodLog').innerText(),/Milk/);
+    await page.fill('#qty','-10');
+    await page.click('.food-entry .button-dark');
+    assert.equal(await page.evaluate(()=>get('protein-'+todayKey(),[]).length),1,'Invalid portions are not saved');
+    await page.click('[data-tab="progress"]');
+    await page.click('.page-heading .button-dark');
+    assert.equal(await page.locator('#weeklyCheckin').evaluate(el=>el.open),true);
+    await page.click('[data-tab="settings"]');
+    const downloadPromise=page.waitForEvent('download');
+    await page.click('.backup-card .button-dark');
+    assert.match((await downloadPromise).suggestedFilename(),/body-tracker-backup/);
+    await page.locator('[data-tab="settings"]').focus();
+    await page.keyboard.press('Home');
+    assert.equal(await page.locator('[data-tab="today"]').getAttribute('aria-selected'),'true','Keyboard navigation works');
     // Existing checkmarks still contribute without double-counting a session day.
     assert.equal(await page.evaluate(()=>{const d=daily();d.done.armcircles=true;saveDaily(d);Habit.refresh();return document.getElementById('sessions7').textContent;}),'1');
     await page.evaluate(async()=>{await navigator.serviceWorker.ready;});

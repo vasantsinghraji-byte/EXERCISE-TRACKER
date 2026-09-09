@@ -1,101 +1,79 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta name="theme-color" content="#0f172a"/>
-<link rel="manifest" href="./manifest.json"/>
-<link rel="apple-touch-icon" href="./icon-192.png"/>
-<title>Body Tracker</title>
-<style>
-:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--accent:#2563eb;--ok:#16a34a;--line:#e5e7eb}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:820px;margin:0 auto;padding:16px 16px 100px}header{padding-top:env(safe-area-inset-top);margin-bottom:8px}
-h1{font-size:28px;margin:8px 0 4px}.sub,.small,.meta{color:var(--muted);font-size:13px}
-.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;position:sticky;top:0;background:rgba(246,247,251,.96);backdrop-filter:blur(12px);padding:8px 0;z-index:20}
-button{border:0;border-radius:12px;padding:11px 10px;font-weight:700;background:#e8eefc;color:#1e3a8a}button.active{background:var(--accent);color:white}
-.card{background:var(--card);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 4px 18px rgba(15,23,42,.06)}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.grow{flex:1}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:520px){.tabs{font-size:11px}.tabs button{padding:10px 4px}}
-.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;background:var(--ok);width:0%;transition:.2s}
-.exercise{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.check{width:29px;height:29px;padding:0;border:2px solid #9ca3af;background:white;flex:none}.check.done{background:var(--ok);border-color:var(--ok);color:white}
-.pill{font-size:11px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3}.link{background:none;color:var(--accent);padding:7px 0;font-size:13px}
-.details{display:none;font-size:14px;line-height:1.45}.details.open{display:block}input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}
-label{font-size:12px;color:var(--muted)}.timer{font-size:54px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}.phase{text-align:center;font-weight:800;color:var(--accent)}
-.timerBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.kpi{background:#f9fafb;border-radius:14px;padding:12px}.kpi strong{display:block;font-size:23px}
-.hist{padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}.hidden{display:none}canvas{width:100%;height:180px;background:#fafafa;border-radius:12px}
-footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);padding:9px 14px calc(9px + env(safe-area-inset-bottom));font-size:11px;text-align:center;color:var(--muted)}
-.warn{background:#fff7ed;color:#9a3412;border-radius:12px;padding:10px;font-size:13px}
-</style>
-<link rel="stylesheet" href="./habit.css"/>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><meta name="theme-color" content="#f5f6f2"/>
+<link rel="manifest" href="./manifest.json"/><link rel="apple-touch-icon" href="./icon-192.png"/>
+<title>Body Tracker — Your daily movement companion</title>
+<link rel="stylesheet" href="./habit.css"/><link rel="stylesheet" href="./interface.css"/>
 </head><body>
-<div class="wrap">
-<header><h1>Body Tracker</h1><div class="sub">Adaptive mobility • strength • stamina • boxing • protein</div></header>
-<div class="tabs">
-<button data-tab="today" class="active">Today</button><button data-tab="boxing">Boxing</button><button data-tab="progress">Progress</button><button data-tab="nutrition">Protein</button><button data-tab="settings">Backup</button>
-</div>
-
-<section id="today" class="tab">
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<aside class="sidebar">
+<a class="brand" href="#today" aria-label="Body Tracker home"><span class="brand-mark" aria-hidden="true">b</span><span>body<span class="brand-light">tracker</span><small>MAKE ROOM FOR MOVEMENT</small></span></a>
+<span class="nav-label">YOUR DAILY SPACE</span>
+<nav class="tabs" role="tablist" aria-label="App sections">
+<button id="nav-today" data-tab="today" class="active" role="tab" aria-controls="today" aria-selected="true"><span data-icon="sun"></span><span>Today</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+<button id="nav-boxing" data-tab="boxing" role="tab" aria-controls="boxing" aria-selected="false" tabindex="-1"><span data-icon="bolt"></span><span>Boxing</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+<button id="nav-progress" data-tab="progress" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1"><span data-icon="chart"></span><span>Progress</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+<button id="nav-nutrition" data-tab="nutrition" role="tab" aria-controls="nutrition" aria-selected="false" tabindex="-1"><span data-icon="leaf"></span><span>Protein</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+<button id="nav-settings" data-tab="settings" role="tab" aria-controls="settings" aria-selected="false" tabindex="-1"><span data-icon="shield"></span><span>Backup</span><span class="nav-arrow" aria-hidden="true">↗</span></button>
+</nav>
+<div class="sidebar-note"><span class="tiny-orbit" aria-hidden="true">✳</span><strong>Small steps.<br>Real momentum.</strong><p>A little today is a good place to start.</p></div>
+<div class="device-status"><span class="status-dot"></span> Your space. Your pace.</div>
+</aside>
+<main class="wrap" id="mainContent" tabindex="-1">
+<header class="topbar"><span class="breadcrumb">MY WELLBEING <span>/</span> <b id="currentSection">Today</b></span><span class="date-chip" id="headerDate"></span></header>
+<section id="today" class="tab" role="tabpanel" aria-labelledby="nav-today">
+<div class="page-heading"><div><span class="eyebrow">LET’S MAKE TODAY COUNT</span><h1>A little better, every day.</h1><p>Your movement, your energy, your next small win.</p></div><span class="heading-symbol" data-icon="sun"></span></div>
 <div id="habitHome"></div>
-<div class="card"><div class="row"><div><strong id="mode">Session</strong><div id="todayDate" class="small"></div></div><strong id="pct">0%</strong></div><div class="progress" style="margin-top:10px"><div class="bar" id="bar"></div></div></div>
-<div class="card">
-<strong>How are you today?</strong>
-<div class="grid2" style="margin-top:10px">
-<label>Energy 1–5<input id="energy" type="number" min="1" max="5" value="3"></label>
-<label>Knee pain 0–10<input id="knee" type="number" min="0" max="10" value="0"></label>
-<label>Back stiffness 0–10<input id="back" type="number" min="0" max="10" value="3"></label>
-<label>Hip stiffness 0–10<input id="hip" type="number" min="0" max="10" value="3"></label>
+<div class="stats-strip">
+<div class="kpi"><span class="small">Active days <span>/ 7d</span></span><strong id="sessions7">0</strong><span class="metric-caption">Showing up adds up</span></div>
+<div class="kpi"><span class="small">Mobility days</span><strong id="mobility7">0</strong><span class="metric-caption">Space to move freely</span></div>
+<div class="kpi"><span class="small">Strength days</span><strong id="strength7">0</strong><span class="metric-caption">Build at your pace</span></div>
+<div class="kpi goal-kpi"><span class="small">Your direction</span><strong>Move better <span aria-hidden="true">↗</span></strong><span class="metric-caption">Consistency over intensity</span></div>
 </div>
-<button style="width:100%;margin-top:10px" onclick="recalcMode()">Build today's plan</button>
-</div>
-<div class="card"><div class="grid2">
-<div class="kpi"><span class="small">Active days / 7d</span><strong id="sessions7">0</strong></div>
-<div class="kpi"><span class="small">Mobility days</span><strong id="mobility7">0</strong></div>
-<div class="kpi"><span class="small">Strength days</span><strong id="strength7">0</strong></div>
-<div class="kpi"><span class="small">Current goal</span><strong style="font-size:16px">Move better</strong></div>
-</div></div>
-<div class="card"><div class="warn">Sharp pain, dizziness, chest pain, or unusual breathlessness → stop. Knee pain >3/10 during chair squat → reduce range or skip.</div></div>
-<details class="card"><summary>Exercise library & manual checkmarks</summary><p class="small">Use this for movement outside a guided session. Checkmarks record activity days, not session duration.</p><div id="exerciseList"></div></details>
-<div class="card"><strong>Session effort</strong><div class="grid2" style="margin-top:10px"><label>RPE 1–10<input id="rpe" type="number" min="1" max="10" value="5"></label><div><button style="width:100%;margin-top:18px" onclick="saveRPE()">Save RPE</button></div></div><div id="rpeMsg" class="small"></div></div>
+<div class="content-grid">
+<div class="card readiness-card"><div class="card-heading"><span class="icon-tile" data-icon="heart"></span><div><h2>How are you feeling?</h2><p>A quick check-in helps tailor your plan.</p></div></div>
+<div class="grid2 form-grid"><label>Energy <span>1–5</span><input id="energy" type="number" min="1" max="5" value="3" required></label><label>Knee discomfort <span>0–10</span><input id="knee" type="number" min="0" max="10" value="0" required></label><label>Back stiffness <span>0–10</span><input id="back" type="number" min="0" max="10" value="3" required></label><label>Hip stiffness <span>0–10</span><input id="hip" type="number" min="0" max="10" value="3" required></label></div>
+<button class="button-dark full" onclick="UI.updatePlan()">Update my plan <span aria-hidden="true">↗</span></button></div>
+<div class="card"><div class="card-heading"><span class="icon-tile lavender" data-icon="check"></span><div><h2>Your movement checklist</h2><p id="todayDate"></p></div></div><div class="row plan-summary"><strong id="mode">Session</strong><strong id="pct">0%</strong></div><div class="progress"><div class="bar" id="bar"></div></div><p class="quiet">Manual checkmarks for movement outside your guided sessions.</p>
+<details class="library"><summary>Browse your exercises <span aria-hidden="true">+</span></summary><div id="exerciseList"></div></details>
+<details class="effort-details"><summary>Log effort for a separate session <span aria-hidden="true">+</span></summary><div class="inline-form"><label>Effort (RPE 1–10)<input id="rpe" type="number" min="1" max="10" value="5"></label><button onclick="saveRPE()">Save effort</button></div><p id="rpeMsg" class="small" role="status"></p></details></div></div>
+<p class="safety-note"><span data-icon="heart"></span>Listen to your body. Stop with sharp pain, dizziness, chest pain, or unusual breathlessness. Skip any movement that feels uncomfortable.</p>
 </section>
-
-<section id="boxing" class="tab hidden">
-<div class="card"><strong>Boxing interval timer</strong><div class="phase" id="phase">WORK</div><div class="timer" id="timer">00:20</div><div class="small" id="roundLabel" style="text-align:center">Round 1 / 2</div>
-<div class="timerBtns"><button onclick="setBoxing(20,60,2)">20s ×2</button><button onclick="setBoxing(30,60,2)">30s ×2</button><button onclick="setBoxing(45,75,2)">45s ×2</button></div>
-<div class="timerBtns"><button onclick="startTimer()">Start</button><button onclick="pauseTimer()">Pause</button><button onclick="resetTimer()">Reset</button></div></div>
-<div class="card"><strong>Progression recommendation</strong><p id="boxRec" class="small"></p><div class="small">Increase only when rounds remain relaxed and repeatable. Current priority is tolerance, not maximal intensity.</div></div>
+<section id="boxing" class="tab hidden" role="tabpanel" aria-labelledby="nav-boxing">
+<div class="page-heading"><div><span class="eyebrow">FIND YOUR RHYTHM</span><h1>Step into your session.</h1><p>A little focus. A steady pace. One round at a time.</p></div><span class="heading-symbol peach" data-icon="bolt"></span></div>
+<div class="boxing-layout"><div class="card boxing-stage"><div class="row"><span class="eyebrow">BOXING STUDIO</span><span class="studio-badge" id="boxingStatus">Ready when you are</span></div>
+<div class="timer-orbit" id="timerOrbit"><div class="timer-core"><div class="phase" id="phase">WORK</div><div class="timer" id="timer">00:20</div><div id="roundLabel">Round 1 / 2</div></div></div>
+<p class="boxing-cue" id="boxingCue">Relax your shoulders. Keep your breathing easy.</p>
+<div class="timerBtns boxing-controls"><button class="primary" id="boxingStart" onclick="startTimer()"><span data-icon="play"></span> Start</button><button id="boxingPause" onclick="pauseTimer()"><span data-icon="pause"></span> Pause</button><button onclick="resetTimer()"><span data-icon="reset"></span> Reset</button></div><p class="stage-footnote">Keep this screen open. Switching away pauses the timer.</p></div>
+<div class="boxing-side"><div class="card"><span class="eyebrow">SET YOUR PACE</span><h2>Choose your rounds</h2><p class="quiet">Two rounds, with recovery between them.</p><div class="preset-list">
+<button data-box-preset="20" class="selected" aria-pressed="true" onclick="setBoxing(20,60,2)"><span class="preset-number">01</span><span><strong>Ease into it</strong><small>20s work · 60s rest · 2 rounds</small></span><span class="preset-check">✓</span></button>
+<button data-box-preset="30" aria-pressed="false" onclick="setBoxing(30,60,2)"><span class="preset-number">02</span><span><strong>Find your flow</strong><small>30s work · 60s rest · 2 rounds</small></span><span class="preset-check">✓</span></button>
+<button data-box-preset="45" aria-pressed="false" onclick="setBoxing(45,75,2)"><span class="preset-number">03</span><span><strong>A longer rhythm</strong><small>45s work · 75s rest · 2 rounds</small></span><span class="preset-check">✓</span></button>
+</div></div><div class="card coach-card"><span class="icon-tile" data-icon="spark"></span><h2>Your next step</h2><p id="boxRec"></p><p class="quiet">Build only when rounds feel relaxed and repeatable. There’s no rush to go harder.</p></div></div></div>
 </section>
-
-<section id="progress" class="tab hidden">
+<section id="progress" class="tab hidden" role="tabpanel" aria-labelledby="nav-progress">
+<div class="page-heading"><div><span class="eyebrow">THE BIGGER PICTURE</span><h1>Look how far you’re going.</h1><p>Small efforts leave a trail. This is yours.</p></div><button class="button-dark" onclick="UI.openCheckin()">+ Weekly check-in</button></div>
 <div id="habitProgress"></div>
-<div class="card"><strong>Weekly progress check-in</strong><div class="grid2" style="margin-top:10px">
-<label>Weight kg<input id="weight" type="number" step="0.1"></label><label>Waist cm<input id="waist" type="number" step="0.1"></label>
-<label>Forward bend<select id="bend"><option>Knees</option><option selected>Just below knees</option><option>Mid-shin</option><option>Ankles</option><option>Floor</option></select></label>
-<label>Balance sec<input id="balance" type="number" value="15"></label><label>Knee pain 0–10<input id="progKnee" type="number" min="0" max="10"></label>
-<label>Longest boxing round sec<input id="boxingLongest" type="number" value="20"></label><label>Recovery min<input id="recovery" type="number" step="0.5"></label>
-<label>Energy 1–5<input id="progEnergy" type="number" min="1" max="5"></label><label>RPE 1–10<input id="progRpe" type="number" min="1" max="10"></label>
-</div><button style="width:100%;margin-top:10px" onclick="saveProgress()">Save progress</button><div id="progressMsg" class="small"></div></div>
-<div class="card"><strong>Boxing progress</strong><canvas id="chart" width="700" height="180"></canvas></div>
-<div class="card"><strong>Recent history</strong><div id="progressHistory"></div></div>
+<div class="content-grid progress-bottom"><div class="card"><div class="card-heading"><span class="icon-tile lavender" data-icon="chart"></span><div><h2>Your boxing trend</h2><p>Reported round duration, in seconds.</p></div></div><canvas id="chart" width="700" height="220" role="img" aria-label="Boxing round duration chart; values appear in recent check-ins below"></canvas><div id="chartSummary" class="quiet"></div></div>
+<details class="card checkin-card" id="weeklyCheckin"><summary><span>Weekly body check-in<small>Notice what’s changing</small></span><span aria-hidden="true">+</span></summary><p class="quiet">Use similar conditions each time. Leave unknown values blank.</p><div class="grid2 form-grid">
+<label>Weight <span>kg</span><input id="weight" type="number" min="0" step="0.1"></label><label>Waist <span>cm</span><input id="waist" type="number" min="0" step="0.1"></label><label>Forward bend<select id="bend"><option>Knees</option><option selected>Just below knees</option><option>Mid-shin</option><option>Ankles</option><option>Floor</option></select></label><label>Balance <span>seconds</span><input id="balance" type="number" min="0" placeholder="e.g. 15"></label><label>Knee discomfort <span>0–10</span><input id="progKnee" type="number" min="0" max="10"></label><label>Longest boxing round <span>sec</span><input id="boxingLongest" type="number" min="0" placeholder="e.g. 20"></label><label>Recovery <span>minutes</span><input id="recovery" type="number" min="0" step="0.5"></label><label>Energy <span>1–5</span><input id="progEnergy" type="number" min="1" max="5"></label><label>Effort (RPE) <span>1–10</span><input id="progRpe" type="number" min="1" max="10"></label>
+</div><button class="button-dark full" onclick="saveProgress()">Save my check-in <span aria-hidden="true">↗</span></button><p id="progressMsg" class="small" role="status"></p></details></div>
+<div class="card"><div class="card-heading"><span class="icon-tile" data-icon="calendar"></span><div><h2>Recent check-ins</h2><p>Your measurements, in your own time.</p></div></div><div id="progressHistory"></div></div>
 </section>
-
-<section id="nutrition" class="tab hidden">
-<div class="card"><div class="row"><div><strong>Today's protein</strong><div class="small">Food values are approximate; labels vary.</div></div><strong id="proteinTotal">0 g</strong></div>
-<div class="progress" style="margin-top:10px"><div class="bar" id="proteinBar"></div></div>
-<div class="grid2" style="margin-top:12px"><label>Daily target g<input id="proteinTarget" type="number" value="60"></label><div><button style="width:100%;margin-top:18px" onclick="saveProteinTarget()">Save target</button></div></div></div>
-<div class="card"><strong>Add food</strong><div style="margin-top:10px"><label>Food<select id="food"></select></label></div><div class="grid2" style="margin-top:10px"><label>Quantity g/ml<input id="qty" type="number" value="100"></label><div><button style="width:100%;margin-top:18px" onclick="addProtein()">Add protein</button></div></div></div>
-<div class="card"><strong>Today's food log</strong><div id="foodLog"></div></div>
+<section id="nutrition" class="tab hidden" role="tabpanel" aria-labelledby="nav-nutrition">
+<div class="page-heading"><div><span class="eyebrow">FUEL YOUR EVERYDAY</span><h1>A little care on your plate.</h1><p>Keep track of protein with the foods you already enjoy.</p></div><span class="heading-symbol peach" data-icon="leaf"></span></div>
+<div class="content-grid nutrition-top"><div class="card protein-overview"><div class="row"><span class="eyebrow">TODAY’S PROTEIN</span><span class="pill warm">One meal at a time</span></div><div class="protein-display"><div class="protein-ring" id="proteinRing"><div><strong id="proteinTotal">0 g</strong><span id="proteinFraction">of 60 g target</span></div></div><div class="protein-aside"><span class="icon-tile peach" data-icon="leaf"></span><h2 id="proteinEncouragement">A fresh start.</h2><p id="proteinRemaining" class="quiet">Your first meal starts here.</p></div></div><div class="progress"><div class="bar" id="proteinBar"></div></div><details class="target-settings"><summary>Adjust your daily target <span aria-hidden="true">+</span></summary><div class="inline-form"><label>Personal target <span>grams</span><input id="proteinTarget" type="number" min="1" value="60"></label><button onclick="saveProteinTarget()">Save target</button></div></details></div>
+<div class="card food-entry"><div class="card-heading"><span class="icon-tile peach" data-icon="plus"></span><div><h2>What’s on your plate?</h2><p>Add a portion to today’s log.</p></div></div><label>Choose a food<select id="food"></select></label><div class="inline-form"><label>Portion <span id="portionUnit">g / ml</span><input id="qty" type="number" min="1" value="100"></label><div class="food-preview"><span>Approx. protein</span><strong id="foodPreview">52 g</strong></div></div><button class="button-dark full" onclick="addProtein()">+ Add to today’s log</button><p class="quiet">Food values are approximate. Check the label for your product.</p></div></div>
+<div class="section-label"><h2>Your everyday foods</h2><span class="quiet">Tap to fill a portion</span></div><div class="quick-foods"><button data-food="6" data-qty="200"><span class="food-glyph" aria-hidden="true">◒</span><strong>Milk</strong><small>200 ml · ~6.4g protein</small><span class="food-plus">+</span></button><button data-food="7" data-qty="100"><span class="food-glyph" aria-hidden="true">◡</span><strong>Curd</strong><small>100 g · ~3.5g protein</small><span class="food-plus">+</span></button><button data-food="8" data-qty="100"><span class="food-glyph" aria-hidden="true">▦</span><strong>Paneer</strong><small>100 g · ~18g protein</small><span class="food-plus">+</span></button><button data-food="4" data-qty="100"><span class="food-glyph" aria-hidden="true">◉</span><strong>Cooked dal</strong><small>100 g · ~9g protein</small><span class="food-plus">+</span></button></div>
+<div class="card"><div class="card-heading"><span class="icon-tile peach" data-icon="list"></span><div><h2>Today’s food journal</h2><p>Every portion, all in one place.</p></div></div><div id="foodLog"></div></div>
 </section>
-
-<section id="settings" class="tab hidden">
-<div class="card"><strong>Backup & restore</strong><p class="small">Your history is stored in browser storage. Export a backup regularly so clearing website data does not erase it.</p>
-<button style="width:100%" onclick="exportBackup()">Export backup JSON</button>
-<label style="display:block;margin-top:12px">Import backup<input type="file" accept=".json,application/json" onchange="importBackup(this.files[0])"></label>
-</div>
-<div class="card"><strong>Maintenance</strong><button style="width:100%" onclick="clearToday()">Clear today's data</button><div class="small" style="margin-top:8px">App version 2.0.0</div></div>
-</section>
-</div>
-<footer>Body Tracker v2 • Local-first PWA</footer>
-<script src="./app.js"></script>
-<script src="./habit.js"></script>
+<section id="settings" class="tab hidden" role="tabpanel" aria-labelledby="nav-settings">
+<div class="page-heading"><div><span class="eyebrow">TAKE CARE OF YOUR PROGRESS</span><h1>Your history, in good hands.</h1><p>Keep a copy of the effort you’ve put in.</p></div><span class="heading-symbol" data-icon="shield"></span></div>
+<div class="card privacy-banner"><span class="privacy-symbol" data-icon="shield"></span><div><span class="eyebrow">PERSONAL BY DESIGN</span><h2>Your records stay on this device.</h2><p>No account to manage. Export a backup before changing phones or clearing browser data.</p></div><span class="pill">Stored locally</span></div>
+<div class="content-grid"><div class="card backup-card"><span class="icon-tile large" data-icon="download"></span><h2>Keep a safe copy</h2><p>Save your sessions, check-ins, preferences and food logs as a backup file.</p><button class="button-dark full" onclick="exportBackup()"><span data-icon="download"></span> Export my backup</button><p class="quiet">Keep the file somewhere you can find it again.</p></div><div class="card backup-card"><span class="icon-tile large lavender" data-icon="upload"></span><h2>Bring your history back</h2><p>Restore a Body Tracker backup you previously exported.</p><label class="file-drop"><span data-icon="upload"></span><strong>Choose a backup file</strong><span>JSON files only</span><input id="backupFile" type="file" accept=".json,application/json" onchange="UI.restore(this)"></label><p class="quiet">Matching records on this device will be replaced.</p></div></div>
+<div class="card maintenance-card"><div><span class="eyebrow">START TODAY OVER</span><h2>Clear today’s manual entries</h2><p>Removes today’s checkmarks, readiness, effort and food log. Saved sessions remain in Progress.</p></div><button class="button-danger" onclick="clearToday()">Clear today’s entries</button></div>
+<div class="settings-foot"><span data-icon="heart"></span><span>Built for the long run.</span><span class="small" id="appVersion">Version 3.1.0</span></div>
+</section><footer>Body Tracker · Small steps, steady progress</footer>
+</main><div id="toast" role="status" aria-live="polite" hidden></div>
+<script src="./app.js"></script><script src="./habit.js"></script><script src="./interface.js"></script>
 </body></html>

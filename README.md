@@ -1,4 +1,6 @@
-# Body Tracker 3
+# Body Tracker 3.1
+
+The five sections now use a responsive desktop sidebar and mobile bottom navigation, keyboard-accessible tabs, a boxing timer ring, protein target ring and portion preview, quick food selection, labeled progress charts, and a dedicated backup screen. Food entries can be removed from the journal. No external fonts, icon packages or image requests are needed.
 
 A local-first daily movement companion. Serve this folder using any static HTTP server; HTTPS or localhost enables service-worker offline caching. Existing nutrition, check-ins and backups remain available.
 
@@ -34,4 +36,4 @@ node tests/habit.browser.cjs
 
 An existing Playwright package path can be passed as the first argument. The script starts a loopback static server, checks the main session lifecycle and regression cases, and saves desktop/mobile screenshots in `tests/`. No real user browser data is used.
 
-Deploy `index.html`, `app.js`, `habit.js`, `habit.css`, `sw.js`, `manifest.json` and both icons together. The older ZIP and README.txt describe version 2 and are retained as historical artifacts. The service worker uses a version 3 cache and removes only older Body Tracker caches.
+Deploy `index.html`, `app.js`, `habit.js`, `habit.css`, `interface.js`, `interface.css`, `sw.js`, `manifest.json` and both icons together. The older ZIP and README.txt describe version 2 and are retained as historical artifacts. The service worker uses a version 3.1 cache and removes only older Body Tracker caches.
