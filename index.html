@@ -4,214 +4,94 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="theme-color" content="#0f172a"/>
-<link rel="manifest" href="manifest.json"/>
-<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="manifest" href="./manifest.json"/>
+<link rel="apple-touch-icon" href="./icon-192.png"/>
 <title>Body Tracker</title>
 <style>
-:root {
-  --bg:#f6f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280;
-  --accent:#2563eb; --ok:#16a34a; --line:#e5e7eb; --warn:#d97706;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:760px;margin:0 auto;padding:16px 16px 90px}
-header{padding-top:env(safe-area-inset-top);margin-bottom:12px}
-h1{font-size:28px;margin:8px 0 4px} .sub{color:var(--muted);font-size:14px}
+:root{--bg:#f6f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--accent:#2563eb;--ok:#16a34a;--line:#e5e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:820px;margin:0 auto;padding:16px 16px 100px}header{padding-top:env(safe-area-inset-top);margin-bottom:8px}
+h1{font-size:28px;margin:8px 0 4px}.sub,.small,.meta{color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;position:sticky;top:0;background:rgba(246,247,251,.96);backdrop-filter:blur(12px);padding:8px 0;z-index:20}
+button{border:0;border-radius:12px;padding:11px 10px;font-weight:700;background:#e8eefc;color:#1e3a8a}button.active{background:var(--accent);color:white}
 .card{background:var(--card);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 4px 18px rgba(15,23,42,.06)}
-.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-.bar{height:100%;background:var(--ok);width:0%}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:sticky;top:0;background:rgba(246,247,251,.95);backdrop-filter:blur(12px);padding:8px 0;z-index:10}
-button{border:0;border-radius:12px;padding:11px 10px;font-weight:600;background:#e8eefc;color:#1e3a8a}
-button.active{background:var(--accent);color:white}
-.exercise{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
-.exercise:last-child{border-bottom:0}
-.check{width:28px;height:28px;border-radius:9px;border:2px solid #9ca3af;flex:0 0 auto;margin-top:2px;background:white;padding:0}
-.check.done{background:var(--ok);border-color:var(--ok);color:white}
-.meta{font-size:13px;color:var(--muted);margin-top:4px}
-.badge{display:inline-block;font-size:11px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;margin-top:7px}
-.details{display:none;margin-top:8px;font-size:14px;line-height:1.45}
-.details.open{display:block}
-.linkbtn{background:none;color:var(--accent);padding:6px 0;font-size:13px}
-.timer{text-align:center;font-size:52px;font-weight:700;font-variant-numeric:tabular-nums;margin:10px 0}
-.timerBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.tip{font-size:14px;line-height:1.45;color:#374151}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.kpi{background:#f9fafb;border-radius:14px;padding:12px}
-.kpi strong{display:block;font-size:22px}
-input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}
-.small{font-size:12px;color:var(--muted)}
-.hidden{display:none}
-footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));font-size:12px;text-align:center;color:var(--muted)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.grow{flex:1}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){.tabs{font-size:11px}.tabs button{padding:10px 4px}}
+.progress{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;background:var(--ok);width:0%;transition:.2s}
+.exercise{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.check{width:29px;height:29px;padding:0;border:2px solid #9ca3af;background:white;flex:none}.check.done{background:var(--ok);border-color:var(--ok);color:white}
+.pill{font-size:11px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3}.link{background:none;color:var(--accent);padding:7px 0;font-size:13px}
+.details{display:none;font-size:14px;line-height:1.45}.details.open{display:block}input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:white}
+label{font-size:12px;color:var(--muted)}.timer{font-size:54px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}.phase{text-align:center;font-weight:800;color:var(--accent)}
+.timerBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.kpi{background:#f9fafb;border-radius:14px;padding:12px}.kpi strong{display:block;font-size:23px}
+.hist{padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}.hidden{display:none}canvas{width:100%;height:180px;background:#fafafa;border-radius:12px}
+footer{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);padding:9px 14px calc(9px + env(safe-area-inset-bottom));font-size:11px;text-align:center;color:var(--muted)}
+.warn{background:#fff7ed;color:#9a3412;border-radius:12px;padding:10px;font-size:13px}
 </style>
-</head>
-<body>
+</head><body>
 <div class="wrap">
-<header>
-  <h1>Body Tracker</h1>
-  <div class="sub">Mobility → Strength → Stamina → Boxing</div>
-</header>
-
+<header><h1>Body Tracker</h1><div class="sub">Adaptive mobility • strength • stamina • boxing • protein</div></header>
 <div class="tabs">
-  <button data-tab="today" class="active">Today</button>
-  <button data-tab="boxing">Boxing</button>
-  <button data-tab="progress">Progress</button>
-  <button data-tab="guide">Guide</button>
+<button data-tab="today" class="active">Today</button><button data-tab="boxing">Boxing</button><button data-tab="progress">Progress</button><button data-tab="nutrition">Protein</button><button data-tab="settings">Backup</button>
 </div>
 
-<section id="today">
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
-      <div>
-        <strong>Today's completion</strong>
-        <div class="small" id="todayDate"></div>
-      </div>
-      <strong id="pct">0%</strong>
-    </div>
-    <div class="progress" style="margin-top:10px"><div class="bar" id="bar"></div></div>
-  </div>
-  <div class="card">
-    <strong>Important</strong>
-    <p class="tip">Warm-up ko workout mat banaiye. Sharp pain mein push na karein. Chair squat mein knee pain >3/10 ho to range reduce karein ya skip karein.</p>
-  </div>
-  <div class="card" id="exerciseList"></div>
+<section id="today" class="tab">
+<div class="card"><div class="row"><div><strong id="mode">Session</strong><div id="todayDate" class="small"></div></div><strong id="pct">0%</strong></div><div class="progress" style="margin-top:10px"><div class="bar" id="bar"></div></div></div>
+<div class="card">
+<strong>How are you today?</strong>
+<div class="grid2" style="margin-top:10px">
+<label>Energy 1–5<input id="energy" type="number" min="1" max="5" value="3"></label>
+<label>Knee pain 0–10<input id="knee" type="number" min="0" max="10" value="0"></label>
+<label>Back stiffness 0–10<input id="back" type="number" min="0" max="10" value="3"></label>
+<label>Hip stiffness 0–10<input id="hip" type="number" min="0" max="10" value="3"></label>
+</div>
+<button style="width:100%;margin-top:10px" onclick="recalcMode()">Build today's plan</button>
+</div>
+<div class="card"><div class="grid2">
+<div class="kpi"><span class="small">Sessions / 7d</span><strong id="sessions7">0</strong></div>
+<div class="kpi"><span class="small">Mobility days</span><strong id="mobility7">0</strong></div>
+<div class="kpi"><span class="small">Strength days</span><strong id="strength7">0</strong></div>
+<div class="kpi"><span class="small">Current goal</span><strong style="font-size:16px">Move better</strong></div>
+</div></div>
+<div class="card"><div class="warn">Sharp pain, dizziness, chest pain, or unusual breathlessness → stop. Knee pain >3/10 during chair squat → reduce range or skip.</div></div>
+<div class="card" id="exerciseList"></div>
+<div class="card"><strong>Session effort</strong><div class="grid2" style="margin-top:10px"><label>RPE 1–10<input id="rpe" type="number" min="1" max="10" value="5"></label><div><button style="width:100%;margin-top:18px" onclick="saveRPE()">Save RPE</button></div></div><div id="rpeMsg" class="small"></div></div>
 </section>
 
-<section id="boxing" class="hidden">
-  <div class="card">
-    <strong>Shadow Boxing Timer</strong>
-    <div class="small">Start at 20–30 sec. Goal severe exhaustion nahi, repeatable rounds hain.</div>
-    <div class="timer" id="timer">00:20</div>
-    <div class="timerBtns">
-      <button onclick="setTimer(20)">20s</button>
-      <button onclick="setTimer(30)">30s</button>
-      <button onclick="setTimer(45)">45s</button>
-    </div>
-    <div class="timerBtns" style="margin-top:8px">
-      <button onclick="startTimer()">Start</button>
-      <button onclick="pauseTimer()">Pause</button>
-      <button onclick="resetTimer()">Reset</button>
-    </div>
-  </div>
-  <div class="card">
-    <strong>4-week boxing progression</strong>
-    <p class="tip"><b>Week 1:</b> 20 sec × 2 rounds, 60–90 sec rest.<br>
-    <b>Week 2:</b> 25–30 sec × 2–3 rounds.<br>
-    <b>Week 3:</b> 30–40 sec × 3 rounds.<br>
-    <b>Week 4:</b> 45–60 sec × 2–3 rounds.</p>
-    <p class="small">Advance only when technique remains relaxed and breathing recovers comfortably.</p>
-  </div>
+<section id="boxing" class="tab hidden">
+<div class="card"><strong>Boxing interval timer</strong><div class="phase" id="phase">WORK</div><div class="timer" id="timer">00:20</div><div class="small" id="roundLabel" style="text-align:center">Round 1 / 2</div>
+<div class="timerBtns"><button onclick="setBoxing(20,60,2)">20s ×2</button><button onclick="setBoxing(30,60,2)">30s ×2</button><button onclick="setBoxing(45,75,2)">45s ×2</button></div>
+<div class="timerBtns"><button onclick="startTimer()">Start</button><button onclick="pauseTimer()">Pause</button><button onclick="resetTimer()">Reset</button></div></div>
+<div class="card"><strong>Progression recommendation</strong><p id="boxRec" class="small"></p><div class="small">Increase only when rounds remain relaxed and repeatable. Current priority is tolerance, not maximal intensity.</div></div>
 </section>
 
-<section id="progress" class="hidden">
-  <div class="card">
-    <strong>Weekly check-in</strong>
-    <div class="grid2" style="margin-top:12px">
-      <label>Forward bend reach<select id="bend"><option>Knees</option><option>Just below knees</option><option>Mid-shin</option><option>Ankles</option><option>Floor</option></select></label>
-      <label>Balance (sec)<input id="balance" type="number" min="0" value="15"></label>
-      <label>Knee pain 0–10<input id="knee" type="number" min="0" max="10" value="0"></label>
-      <label>Longest boxing round (sec)<input id="round" type="number" min="0" value="20"></label>
-      <label>Recovery (min)<input id="recovery" type="number" min="0" step="0.5"></label>
-      <label>Energy 1–5<input id="energy" type="number" min="1" max="5"></label>
-    </div>
-    <button style="width:100%;margin-top:12px" onclick="saveCheckin()">Save check-in</button>
-    <div id="savedMsg" class="small" style="margin-top:8px"></div>
-  </div>
-  <div class="card">
-    <div class="grid2">
-      <div class="kpi"><span class="small">Current push-ups</span><strong>12+</strong></div>
-      <div class="kpi"><span class="small">Current plank</span><strong>40s</strong></div>
-      <div class="kpi"><span class="small">Weight</span><strong>90 kg</strong></div>
-      <div class="kpi"><span class="small">Height</span><strong>180 cm</strong></div>
-    </div>
-  </div>
+<section id="progress" class="tab hidden">
+<div class="card"><strong>Weekly progress check-in</strong><div class="grid2" style="margin-top:10px">
+<label>Weight kg<input id="weight" type="number" step="0.1"></label><label>Waist cm<input id="waist" type="number" step="0.1"></label>
+<label>Forward bend<select id="bend"><option>Knees</option><option selected>Just below knees</option><option>Mid-shin</option><option>Ankles</option><option>Floor</option></select></label>
+<label>Balance sec<input id="balance" type="number" value="15"></label><label>Knee pain 0–10<input id="progKnee" type="number" min="0" max="10"></label>
+<label>Longest boxing round sec<input id="boxingLongest" type="number" value="20"></label><label>Recovery min<input id="recovery" type="number" step="0.5"></label>
+<label>Energy 1–5<input id="progEnergy" type="number" min="1" max="5"></label><label>RPE 1–10<input id="progRpe" type="number" min="1" max="10"></label>
+</div><button style="width:100%;margin-top:10px" onclick="saveProgress()">Save progress</button><div id="progressMsg" class="small"></div></div>
+<div class="card"><strong>Boxing progress</strong><canvas id="chart" width="700" height="180"></canvas></div>
+<div class="card"><strong>Recent history</strong><div id="progressHistory"></div></div>
 </section>
 
-<section id="guide" class="hidden">
-  <div class="card" id="guideList"></div>
+<section id="nutrition" class="tab hidden">
+<div class="card"><div class="row"><div><strong>Today's protein</strong><div class="small">Food values are approximate; labels vary.</div></div><strong id="proteinTotal">0 g</strong></div>
+<div class="progress" style="margin-top:10px"><div class="bar" id="proteinBar"></div></div>
+<div class="grid2" style="margin-top:12px"><label>Daily target g<input id="proteinTarget" type="number" value="60"></label><div><button style="width:100%;margin-top:18px" onclick="saveProteinTarget()">Save target</button></div></div></div>
+<div class="card"><strong>Add food</strong><div style="margin-top:10px"><label>Food<select id="food"></select></label></div><div class="grid2" style="margin-top:10px"><label>Quantity g/ml<input id="qty" type="number" value="100"></label><div><button style="width:100%;margin-top:18px" onclick="addProtein()">Add protein</button></div></div></div>
+<div class="card"><strong>Today's food log</strong><div id="foodLog"></div></div>
+</section>
+
+<section id="settings" class="tab hidden">
+<div class="card"><strong>Backup & restore</strong><p class="small">Your history is stored in browser storage. Export a backup regularly so clearing website data does not erase it.</p>
+<button style="width:100%" onclick="exportBackup()">Export backup JSON</button>
+<label style="display:block;margin-top:12px">Import backup<input type="file" accept=".json,application/json" onchange="importBackup(this.files[0])"></label>
+</div>
+<div class="card"><strong>Maintenance</strong><button style="width:100%" onclick="clearToday()">Clear today's data</button><div class="small" style="margin-top:8px">App version 2.0.0</div></div>
 </section>
 </div>
-
-<footer>Data stays on this device/browser using local storage.</footer>
-
-<script>
-const exercises = [{"name": "Easy marching", "dose": "2 min", "focus": "Warm-up / circulation", "motion": "Stand tall and march slowly in place. Lift one foot, then the other. Breathe normally. Keep the pace easy enough that you can still talk.", "muscles": "Hip flexors, calves, general circulation", "category": "Warm-up"}, {"name": "Arm circles", "dose": "30 sec each way", "focus": "Shoulders / upper back", "motion": "Stand tall. Start with small circles and gradually make them medium-sized. Go forward, then backward. Keep ribs relaxed.", "muscles": "Deltoids, rotator cuff, upper back", "category": "Warm-up"}, {"name": "Gentle torso rotations", "dose": "8 each side", "focus": "Thoracic rotation", "motion": "Stand with feet hip-width and knees soft. Rotate your chest gently left and right while keeping the pelvis mostly forward. Do not force the lower back.", "muscles": "Thoracic spine, obliques", "category": "Mobility"}, {"name": "Hip circles", "dose": "8 each way", "focus": "Hip mobility", "motion": "Hands on hips. Move your pelvis slowly in a circle: forward \u2192 side \u2192 back \u2192 side. Reverse direction.", "muscles": "Hip capsule, glutes, trunk stabilizers", "category": "Mobility"}, {"name": "Cat-Cow", "dose": "8 slow reps", "focus": "Spine mobility", "motion": "Start on all fours. Exhale and gently round the spine. Inhale and slowly extend the spine. Move smoothly without forcing the neck or lower back.", "muscles": "Spinal extensors/flexors, thoracic and lumbar mobility", "category": "Mobility"}, {"name": "Modified Child's Pose", "dose": "20\u201330 sec \u00d7 2", "focus": "Back / lats / hips", "motion": "From all fours, keep knees slightly apart and push hips back toward heels while reaching hands forward. Stop before knee or back pain.", "muscles": "Lats, thoracolumbar fascia, glutes, hips", "category": "Mobility"}, {"name": "Seated hamstring stretch", "dose": "20\u201330 sec \u00d7 2/side", "focus": "Hamstrings", "motion": "Sit near the edge of a chair. Extend one leg forward with heel down and knee slightly soft. Keep the back long and hinge forward from the hips until the back of the thigh stretches.", "muscles": "Hamstrings", "category": "Mobility"}, {"name": "Half-kneeling hip-flexor stretch", "dose": "20\u201330 sec \u00d7 2/side", "focus": "Hip flexors", "motion": "One knee down, other foot forward. Slightly tuck pelvis, squeeze the glute of the kneeling side, then move the pelvis forward a few centimeters while keeping the torso upright.", "muscles": "Iliopsoas, rectus femoris", "category": "Mobility"}, {"name": "Straight-knee calf stretch", "dose": "30 sec \u00d7 2/side", "focus": "Calf mobility", "motion": "Hands on wall, one leg behind. Keep the back heel down and knee straight, then lean forward until the upper calf stretches.", "muscles": "Gastrocnemius", "category": "Mobility"}, {"name": "Bent-knee calf stretch", "dose": "20 sec \u00d7 2/side", "focus": "Ankle mobility", "motion": "Same wall position, but gently bend the back knee while keeping the heel down.", "muscles": "Soleus, ankle dorsiflexion", "category": "Mobility"}, {"name": "Knee-to-wall ankle mobility", "dose": "8 reps/side", "focus": "Ankle dorsiflexion", "motion": "Face a wall with one foot flat. Drive the knee toward the wall over the 2nd/3rd toe while keeping the heel fully down, then return slowly.", "muscles": "Soleus, ankle joint mobility", "category": "Mobility"}, {"name": "Open-book rotation", "dose": "6 reps/side", "focus": "Thoracic spine / chest", "motion": "Lie on your side with hips and knees bent about 90\u00b0. Keep knees stacked. Sweep the top arm backward while rotating the chest, then return slowly.", "muscles": "Thoracic spine, pectorals, obliques", "category": "Mobility"}, {"name": "Glute bridge", "dose": "10\u201312 \u00d7 2", "focus": "Posterior chain", "motion": "Lie on your back with knees bent. Brace lightly, squeeze the glutes, and lift hips until shoulders-hips-knees form a line. Pause, then lower slowly.", "muscles": "Glute max, hamstrings, core", "category": "Strength"}, {"name": "Bird-dog", "dose": "6/side \u00d7 2", "focus": "Core stability", "motion": "Start on all fours. Brace the abdomen and extend opposite arm and leg without rotating the pelvis. Pause, return, then switch sides.", "muscles": "Deep core, multifidus, glutes, shoulder stabilizers", "category": "Strength"}, {"name": "Push-ups", "dose": "8\u201310 \u00d7 2", "focus": "Upper-body strength", "motion": "Keep body in one line. Lower under control with elbows about 30\u201345\u00b0 from the body, then press back up. Stop before failure.", "muscles": "Chest, triceps, anterior deltoid, core", "category": "Strength"}, {"name": "Chair squat", "dose": "8 \u00d7 2", "focus": "Leg strength / mechanics", "motion": "Stand in front of a chair. Push hips back and bend knees together. Keep knees tracking over toes, lightly touch the chair, then stand by pushing the floor away.", "muscles": "Quads, glutes, adductors, core", "category": "Strength"}, {"name": "Calf raises", "dose": "12 \u00d7 2", "focus": "Ankle strength", "motion": "Hold a wall or chair. Rise onto the balls of the feet, pause at the top, then lower slowly.", "muscles": "Gastrocnemius, soleus", "category": "Strength"}, {"name": "Single-leg balance", "dose": "20 sec \u00d7 2/side", "focus": "Balance / stability", "motion": "Stand near support. Lift one foot a few centimeters, keep pelvis level and standing knee soft. Use fingertip support only if needed.", "muscles": "Glute medius, ankle stabilizers, core", "category": "Strength"}];
-const dateKey = new Date().toISOString().slice(0,10);
-document.getElementById('todayDate').textContent = new Date().toLocaleDateString(undefined, {weekday:'long', day:'numeric', month:'short'});
-
-function stateKey() { return 'tracker-' + dateKey; }
-function loadState() { return JSON.parse(localStorage.getItem(stateKey()) || '{}'); }
-function saveState(s) { localStorage.setItem(stateKey(), JSON.stringify(s)); }
-
-function renderExercises() {
-  const s = loadState();
-  const el = document.getElementById('exerciseList');
-  el.innerHTML = exercises.map((e,i)=>`
-    <div class="exercise">
-      <button class="check ${s[i]?'done':''}" onclick="toggleEx(${i})">${s[i]?'✓':''}</button>
-      <div style="flex:1">
-        <strong>${e.name}</strong>
-        <div class="meta">${e.dose} · ${e.focus}</div>
-        <span class="badge">${e.category}</span><br/>
-        <button class="linkbtn" onclick="toggleDetails(${i})">Motion & muscles</button>
-        <div class="details" id="d${i}">
-          <b>Motion:</b> ${e.motion}<br><br>
-          <b>Works on:</b> ${e.muscles}
-        </div>
-      </div>
-    </div>`).join('');
-  updateProgress();
-}
-function toggleEx(i) {
-  const s = loadState(); s[i] = !s[i]; saveState(s); renderExercises();
-}
-function toggleDetails(i) { document.getElementById('d'+i).classList.toggle('open'); }
-function updateProgress() {
-  const s=loadState(); const done=Object.values(s).filter(Boolean).length;
-  const pct=Math.round(done/exercises.length*100);
-  document.getElementById('pct').textContent=pct+'%';
-  document.getElementById('bar').style.width=pct+'%';
-}
-document.getElementById('guideList').innerHTML = exercises.map(e=>`
-<div style="padding:12px 0;border-bottom:1px solid var(--line)">
-<strong>${e.name}</strong><div class="meta">${e.dose}</div>
-<p class="tip"><b>Motion:</b> ${e.motion}</p>
-<p class="tip"><b>Muscles:</b> ${e.muscles}</p>
-</div>`).join('');
-
-document.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>{
-  document.querySelectorAll('[data-tab]').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
-  ['today','boxing','progress','guide'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  document.getElementById(btn.dataset.tab).classList.remove('hidden');
-});
-
-let timerVal=20, timerInitial=20, timerId=null;
-function drawTimer() {
-  const m=Math.floor(timerVal/60), s=timerVal%60;
-  document.getElementById('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-}
-function setTimer(v) { pauseTimer(); timerVal=v; timerInitial=v; drawTimer(); }
-function startTimer() {
-  if(timerId) return;
-  timerId=setInterval(()=>{
-    if(timerVal>0){timerVal--;drawTimer();}
-    else{pauseTimer(); if(navigator.vibrate) navigator.vibrate([200,100,200]);}
-  },1000);
-}
-function pauseTimer() { if(timerId) clearInterval(timerId); timerId=null; }
-function resetTimer() { pauseTimer(); timerVal=timerInitial; drawTimer(); }
-
-function saveCheckin() {
-  const data={
-    date:dateKey,bend:document.getElementById('bend').value,
-    balance:document.getElementById('balance').value,knee:document.getElementById('knee').value,
-    round:document.getElementById('round').value,recovery:document.getElementById('recovery').value,
-    energy:document.getElementById('energy').value
-  };
-  const arr=JSON.parse(localStorage.getItem('checkins')||'[]');
-  arr.push(data); localStorage.setItem('checkins',JSON.stringify(arr));
-  document.getElementById('savedMsg').textContent='Saved on this iPhone.';
-}
-renderExercises(); drawTimer();
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-</script>
+<footer>Body Tracker v2 • Local-first PWA</footer>
+<script src="./app.js"></script>
 </body></html>

@@ -1,20 +1,25 @@
-BODY TRACKER PWA — iPhone setup
+BODY TRACKER PWA V2
 
-IMPORTANT:
-A PWA needs to be opened from a web address (HTTPS) for full install/offline behavior.
-The ZIP contains the complete app files.
+NEW FEATURES
+- Adaptive Full / Light / Recovery daily session
+- Energy, knee pain, back stiffness and hip stiffness inputs
+- Session RPE
+- Weekly adherence counters
+- Boxing work/rest timer with round count
+- Boxing progression recommendation
+- Weight, waist, forward bend, balance and recovery tracking
+- Simple boxing progress chart
+- Vegetarian protein logger
+- Backup export/import
 
-Quickest options:
-1. Upload these files to any static web host (GitHub Pages, Netlify, Cloudflare Pages, etc.).
-2. Open the resulting HTTPS link in Safari on iPhone.
-3. Tap Share → Add to Home Screen → Add.
-4. Open from the new Body Tracker icon.
+UPDATE YOUR EXISTING GITHUB PAGES REPO
+Replace these files in repository root:
+index.html
+app.js
+manifest.json
+sw.js
+icon-192.png
+icon-512.png
 
-Features:
-- Daily exercise checkboxes
-- Completion percentage
-- Full motion and muscles worked
-- Boxing timer: 20 / 30 / 45 sec
-- 4-week boxing progression
-- Weekly progress check-in
-- Local data storage on the device/browser
+Then commit, wait for Pages deployment, reload the site once in Safari.
+If the Home Screen app shows the old version, remove it and Add to Home Screen again after reloading.
