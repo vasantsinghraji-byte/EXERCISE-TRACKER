@@ -1,0 +1,35 @@
+/* Daily companion: deliberately finite, accessible sessions. */
+body { background: #f3f6f4; }
+.hero { background: #143f35; color: #fff; padding: 24px; }
+.hero h2 { font-size: clamp(26px,5vw,36px); margin: 8px 0; letter-spacing: -.8px; }
+.hero p { color: #d8eee4; line-height: 1.6; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.choices button { min-width: 65px; }
+button { cursor: pointer; min-height: 44px; }
+button:disabled { opacity: .5; cursor: default; }
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible { outline: 3px solid #d97706; outline-offset: 3px; }
+.hero .primary,.primary { background: #bbef9c; color: #19372e; font-size: 16px; width: 100%; }
+.hero .choices button[aria-pressed="true"] { background: #bbef9c; color: #19372e; }
+.habit-settings { margin-top: 16px; }
+.habit-settings summary { cursor: pointer; padding: 8px 0; }
+.habit-settings label { display: block; margin: 10px 0; color: inherit; }
+.week { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; margin: 16px 0; }
+.day { border-radius: 12px; text-align: center; padding: 10px 2px; background: #f1f5f3; font-size: 12px; }
+.day b { display: block; margin-top: 8px; font-size: 18px; }
+.day.moved { background: #d9efcb; color: #244226; }
+.day.rest { background: #e8e8fb; }
+.day.current { outline: 2px solid #336b52; }
+.quiet { color: #52645c; font-size: 13px; line-height: 1.6; }
+dialog { border: 0; border-radius: 22px; width: min(560px,calc(100% - 32px)); max-height: 90dvh; padding: 24px; box-sizing: border-box; color: #19372e; }
+dialog::backdrop { background: #10241dde; }
+dialog h2 { font-size: 28px; margin: 14px 0; }
+dialog p { line-height: 1.65; }
+.guide-clock { text-align: center; font-size: 64px; font-weight: 800; font-variant-numeric: tabular-nums; padding: 18px 0; }
+.guide-track { height: 8px; width: 100%; accent-color: #39734d; }
+.guide-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.guide-actions button { flex: 1; }
+.guide-actions .primary { flex-basis: 100%; }
+.session-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid #dde6e0; }
+#habitNotice { padding: 12px; background: #fff7df; border-radius: 12px; }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition: none!important; animation: none!important; } }

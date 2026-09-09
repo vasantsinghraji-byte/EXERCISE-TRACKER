@@ -1,12 +1,13 @@
 
 const EXERCISES = [{"id": "march", "name": "Easy marching", "dose": "2 min", "focus": "Warm-up / circulation", "motion": "Stand tall and march slowly in place. Lift one foot, then the other. Breathe normally. Keep the pace easy enough that you can still talk.", "muscles": "Hip flexors, calves, general circulation", "category": "Warm-up"}, {"id": "armcircles", "name": "Arm circles", "dose": "30 sec each way", "focus": "Shoulders / upper back", "motion": "Stand tall. Start with small circles and gradually make them medium-sized. Go forward, then backward. Keep ribs relaxed.", "muscles": "Deltoids, rotator cuff, upper back", "category": "Warm-up"}, {"id": "torso", "name": "Gentle torso rotations", "dose": "8 each side", "focus": "Thoracic rotation", "motion": "Stand with feet hip-width and knees soft. Rotate your chest gently left and right while keeping the pelvis mostly forward. Do not force the lower back.", "muscles": "Thoracic spine, obliques", "category": "Mobility"}, {"id": "hipcircles", "name": "Hip circles", "dose": "8 each way", "focus": "Hip mobility", "motion": "Hands on hips. Move your pelvis slowly in a circle: forward \u2192 side \u2192 back \u2192 side. Reverse direction.", "muscles": "Hip capsule, glutes, trunk stabilizers", "category": "Mobility"}, {"id": "catcow", "name": "Cat-Cow", "dose": "8 slow reps", "focus": "Spine mobility", "motion": "Start on all fours. Exhale and gently round the spine. Inhale and slowly extend the spine. Move smoothly without forcing the neck or lower back.", "muscles": "Spinal extensors/flexors, thoracic and lumbar mobility", "category": "Mobility"}, {"id": "child", "name": "Modified Child's Pose", "dose": "20\u201330 sec \u00d7 2", "focus": "Back / lats / hips", "motion": "From all fours, keep knees slightly apart and push hips back toward heels while reaching hands forward. Stop before knee or back pain.", "muscles": "Lats, thoracolumbar fascia, glutes, hips", "category": "Mobility"}, {"id": "ham", "name": "Seated hamstring stretch", "dose": "20\u201330 sec \u00d7 2/side", "focus": "Hamstrings", "motion": "Sit near the edge of a chair. Extend one leg forward with heel down and knee slightly soft. Keep the back long and hinge forward from the hips until the back of the thigh stretches.", "muscles": "Hamstrings", "category": "Mobility"}, {"id": "hipflex", "name": "Half-kneeling hip-flexor stretch", "dose": "20\u201330 sec \u00d7 2/side", "focus": "Hip flexors", "motion": "One knee down, other foot forward. Slightly tuck pelvis, squeeze the glute of the kneeling side, then move the pelvis forward a few centimeters while keeping the torso upright.", "muscles": "Iliopsoas, rectus femoris", "category": "Mobility"}, {"id": "calf1", "name": "Straight-knee calf stretch", "dose": "30 sec \u00d7 2/side", "focus": "Calf mobility", "motion": "Hands on wall, one leg behind. Keep the back heel down and knee straight, then lean forward until the upper calf stretches.", "muscles": "Gastrocnemius", "category": "Mobility"}, {"id": "calf2", "name": "Bent-knee calf stretch", "dose": "20 sec \u00d7 2/side", "focus": "Ankle mobility", "motion": "Same wall position, but gently bend the back knee while keeping the heel down.", "muscles": "Soleus, ankle dorsiflexion", "category": "Mobility"}, {"id": "ankle", "name": "Knee-to-wall ankle mobility", "dose": "8 reps/side", "focus": "Ankle dorsiflexion", "motion": "Face a wall with one foot flat. Drive the knee toward the wall over the 2nd/3rd toe while keeping the heel fully down, then return slowly.", "muscles": "Soleus, ankle joint mobility", "category": "Mobility"}, {"id": "openbook", "name": "Open-book rotation", "dose": "6 reps/side", "focus": "Thoracic spine / chest", "motion": "Lie on your side with hips and knees bent about 90\u00b0. Keep knees stacked. Sweep the top arm backward while rotating the chest, then return slowly.", "muscles": "Thoracic spine, pectorals, obliques", "category": "Mobility"}, {"id": "bridge", "name": "Glute bridge", "dose": "10\u201312 \u00d7 2", "focus": "Posterior chain", "motion": "Lie on your back with knees bent. Brace lightly, squeeze the glutes, and lift hips until shoulders-hips-knees form a line. Pause, then lower slowly.", "muscles": "Glute max, hamstrings, core", "category": "Strength"}, {"id": "birddog", "name": "Bird-dog", "dose": "6/side \u00d7 2", "focus": "Core stability", "motion": "Start on all fours. Brace the abdomen and extend opposite arm and leg without rotating the pelvis. Pause, return, then switch sides.", "muscles": "Deep core, multifidus, glutes, shoulder stabilizers", "category": "Strength"}, {"id": "pushup", "name": "Push-ups", "dose": "8\u201310 \u00d7 2", "focus": "Upper-body strength", "motion": "Keep body in one line. Lower under control with elbows about 30\u201345\u00b0 from the body, then press back up. Stop before failure.", "muscles": "Chest, triceps, anterior deltoid, core", "category": "Strength"}, {"id": "chairsquat", "name": "Chair squat", "dose": "8 \u00d7 2", "focus": "Leg strength / mechanics", "motion": "Stand in front of a chair. Push hips back and bend knees together. Keep knees tracking over toes, lightly touch the chair, then stand by pushing the floor away.", "muscles": "Quads, glutes, adductors, core", "category": "Strength"}, {"id": "calfraises", "name": "Calf raises", "dose": "12 \u00d7 2", "focus": "Ankle strength", "motion": "Hold a wall or chair. Rise onto the balls of the feet, pause at the top, then lower slowly.", "muscles": "Gastrocnemius, soleus", "category": "Strength"}, {"id": "balance", "name": "Single-leg balance", "dose": "20 sec \u00d7 2/side", "focus": "Balance / stability", "motion": "Stand near support. Lift one foot a few centimeters, keep pelvis level and standing knee soft. Use fingertip support only if needed.", "muscles": "Glute medius, ankle stabilizers, core", "category": "Strength"}];
 const FOODS = [{"name": "Soy chunks (dry)", "protein": 52, "unit": "100 g"}, {"name": "Roasted chana", "protein": 20, "unit": "100 g"}, {"name": "Peanuts", "protein": 25, "unit": "100 g"}, {"name": "Sattu", "protein": 20, "unit": "100 g"}, {"name": "Dal cooked", "protein": 9, "unit": "100 g"}, {"name": "Rajma cooked", "protein": 8.5, "unit": "100 g"}, {"name": "Milk", "protein": 3.2, "unit": "100 ml"}, {"name": "Curd", "protein": 3.5, "unit": "100 g"}, {"name": "Paneer", "protein": 18, "unit": "100 g"}, {"name": "Besan", "protein": 22, "unit": "100 g"}];
-const VERSION = '2.0.0';
+const VERSION = '3.0.0';
 
-const todayKey = () => new Date().toISOString().slice(0,10);
+const localDateKey = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+const todayKey = () => localDateKey();
 const get = (k,d) => {
   const raw = localStorage.getItem(k);
-  return raw === null ? d : JSON.parse(raw);
+  try { return raw === null ? d : JSON.parse(raw); } catch { return d; }
 };
 const set = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
@@ -49,7 +50,7 @@ function renderPlan(){
       </div>
     </div>`).join('');
   const done=plan.filter(e=>d.done[e.id]).length;
-  const pct=Math.round(done/plan.length*100);
+  const pct=plan.length?Math.round(done/plan.length*100):0;
   document.getElementById('pct').textContent=pct+'%';
   document.getElementById('bar').style.width=pct+'%';
 }
@@ -57,7 +58,9 @@ function toggleDone(id){ const d=daily(); d.done[id]=!d.done[id]; saveDaily(d); 
 function toggleDetails(id){ document.getElementById('det-'+id).classList.toggle('open'); }
 function recalcMode(){
   const d=daily();
-  ['energy','knee','back','hip'].forEach(id=>d[id]=+document.getElementById(id).value);
+  const fields=['energy','knee','back','hip'];
+  if(fields.some(id=>!document.getElementById(id).value || !document.getElementById(id).checkValidity())) return alert('Enter energy from 1–5 and discomfort scores from 0–10.');
+  fields.forEach(id=>d[id]=+document.getElementById(id).value);
   d.mode=null; saveDaily(d); updateToday();
 }
 function saveRPE(){
@@ -66,7 +69,7 @@ function saveRPE(){
 }
 function getWeekDates(){
   const a=[], now=new Date();
-  for(let i=6;i>=0;i--){ const x=new Date(now); x.setDate(now.getDate()-i); a.push(x.toISOString().slice(0,10)); }
+  for(let i=6;i>=0;i--){ const x=new Date(now); x.setDate(now.getDate()-i); a.push(localDateKey(x)); }
   return a;
 }
 function updateAdherence(){
@@ -108,7 +111,7 @@ function pauseTimer(){ if(timerId) clearInterval(timerId); timerId=null; }
 function resetTimer(){ pauseTimer(); timerVal=timerInitial; roundNo=1; isRest=false; drawTimer(); }
 
 function recommendation(){
-  const logs=get('progressLogs',[]).slice(-3);
+  const logs=get('progressLogs',[]).filter(x=>Number.isFinite(x.rpe)&&x.rpe>=1&&x.rpe<=10&&Number.isFinite(x.recovery)&&x.recovery>0).slice(-3);
   if(logs.length<2) return 'Stay with 20–30 sec rounds for now.';
   const avgRpe=logs.reduce((a,b)=>a+(+b.rpe||0),0)/logs.length;
   const avgRec=logs.reduce((a,b)=>a+(+b.recovery||0),0)/logs.length;
@@ -117,6 +120,8 @@ function recommendation(){
   return 'Maintain current duration until it feels repeatable.';
 }
 function saveProgress(){
+  const inputs=['weight','waist','balance','progKnee','boxingLongest','recovery','progEnergy','progRpe'];
+  if(inputs.some(id=>!document.getElementById(id).checkValidity() || (document.getElementById(id).value!=='' && +document.getElementById(id).value<0))) return alert('Check your progress values. Use non-negative measurements and the indicated score ranges.');
   const p=profile();
   p.weight=+document.getElementById('weight').value||p.weight;
   p.waist=+document.getElementById('waist').value||'';
@@ -125,8 +130,8 @@ function saveProgress(){
     date:todayKey(),weight:+document.getElementById('weight').value||'',waist:+document.getElementById('waist').value||'',
     bend:document.getElementById('bend').value,balance:+document.getElementById('balance').value||0,
     knee:+document.getElementById('progKnee').value||0,boxing:+document.getElementById('boxingLongest').value||0,
-    recovery:+document.getElementById('recovery').value||0,energy:+document.getElementById('progEnergy').value||0,
-    rpe:+document.getElementById('progRpe').value||0
+    recovery:document.getElementById('recovery').value===''?null:+document.getElementById('recovery').value,energy:+document.getElementById('progEnergy').value||0,
+    rpe:document.getElementById('progRpe').value===''?null:+document.getElementById('progRpe').value
   };
   const logs=get('progressLogs',[]); logs.push(rec); set('progressLogs',logs);
   document.getElementById('progressMsg').textContent='Progress saved.';
