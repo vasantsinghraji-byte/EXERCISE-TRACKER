@@ -1,4 +1,6 @@
-# Body Tracker 3.1
+# Body Tracker 3.2
+
+Guided exercise cards support horizontal swipes, Previous/Next buttons and arrow keys when the card is focused. Swiping changes the card and pauses timing; it never confirms activity. Unconfirmed time on a card is discarded when navigating away. Previously confirmed cards can be reviewed without duplicate credit. Reset session restarts the current draft after confirmation, preserving saved history. The boxing timer also retains its own Reset control.
 
 The five sections now use a responsive desktop sidebar and mobile bottom navigation, keyboard-accessible tabs, a boxing timer ring, protein target ring and portion preview, quick food selection, labeled progress charts, and a dedicated backup screen. Food entries can be removed from the journal. No external fonts, icon packages or image requests are needed.
 
@@ -36,4 +38,4 @@ node tests/habit.browser.cjs
 
 An existing Playwright package path can be passed as the first argument. The script starts a loopback static server, checks the main session lifecycle and regression cases, and saves desktop/mobile screenshots in `tests/`. No real user browser data is used.
 
-Deploy `index.html`, `app.js`, `habit.js`, `habit.css`, `interface.js`, `interface.css`, `sw.js`, `manifest.json` and both icons together. The older ZIP and README.txt describe version 2 and are retained as historical artifacts. The service worker uses a version 3.1 cache and removes only older Body Tracker caches.
+Deploy `index.html`, `app.js`, `habit.js`, `habit.css`, `interface.js`, `interface.css`, `sw.js`, `manifest.json` and both icons together. The older ZIP and README.txt describe version 2 and are retained as historical artifacts. The service worker uses a version 3.2 cache and removes only older Body Tracker caches.

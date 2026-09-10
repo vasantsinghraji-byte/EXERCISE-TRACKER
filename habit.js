@@ -105,7 +105,7 @@ const Habit = (() => {
   function start() {
     pauseTimer();
     const draft=get('habitDraft',null);
-    if(draft) {run=draft;run.running=false;}
+    if(draft) {run=draft;run.running=false;if(run.items)run.steps=run.steps.map(step=>({...step,slot:step.slot??run.items.indexOf(step.id)}));}
     else {
       const pool=candidates(); if(!pool.length) return alert('No movements match these preferences. Adjust them or rest today.');
       const p=prefs();
@@ -140,29 +140,67 @@ const Habit = (() => {
   function renderGuide() {
     if(run.phase==='feedback'){renderFeedback();return;}
     const e=EXERCISES.find(e=>e.id===run.items[run.index]);
+    const recorded=run.steps.some(step=>step.slot===run.index);
     dialog.innerHTML=`<span class="eyebrow">Step ${run.index+1} of ${run.items.length} · ${escape(run.phase==='setup'?'Setup / rest':run.phase==='confirm'?'Interval finished':'Move at your pace')}</span>
       <progress class="guide-track" value="${run.index}" max="${run.items.length}" aria-label="Session progress"></progress>
+      <div class="swipe-card" tabindex="0" role="group" aria-label="Exercise card. Swipe left for next, right for previous, or use arrow keys.">
+      <div class="swipe-hint"><span>← Previous</span><span>Swipe to explore</span><span>Next →</span></div>
       <h2 id="guideTitle" tabindex="-1">${escape(e.name)}</h2><p>${escape(e.motion)}</p>
       <p class="quiet">45-second movement window. Use comfortable repetitions; for two-sided movements, split the time between sides. Finishing the full dose is not required.</p>
       <div id="guideClock" class="guide-clock" aria-label="Seconds remaining"></div>
-      <p class="quiet">Stop or skip if uncomfortable. Timer completion alone does not record exercise.</p>
-      <div class="guide-actions"><button id="guideToggle" ${run.phase==='confirm'?'disabled':''}>${run.running?'Pause':run.phase==='setup'?'Begin setup':'Continue'}</button><button id="guideSwap">Swap</button><button id="guideSkip">Skip</button>
-      <button class="primary" id="guideDone" ${run.phase==='setup'?'disabled':''}>I did this movement</button><button id="guideFinish">Finish early</button><button id="guideClose">Save & close</button></div>`;
+      <p class="quiet">${recorded?'Already recorded for this session. Reviewing it earns no duplicate credit.':'Swiping changes the card without recording activity. Stop or skip if uncomfortable.'}</p>
+      <div class="card-dots" aria-label="Card ${run.index+1} of ${run.items.length}">${run.items.map((_,i)=>`<span class="${i===run.index?'current':''} ${run.steps.some(s=>s.slot===i)?'recorded':''}"></span>`).join('')}</div></div>
+      <div class="guide-navigation"><button id="guidePrevious" ${run.index===0?'disabled':''}>← Previous</button><button id="guideSkip">${run.index===run.items.length-1?'Review & finish →':'Next / skip →'}</button></div>
+      <div class="guide-actions"><button id="guideToggle" ${run.phase==='confirm'||recorded?'disabled':''}>${run.running?'Pause':run.phase==='setup'?'Begin setup':'Continue'}</button><button id="guideSwap" ${recorded?'disabled':''}>Swap exercise</button>
+      <button class="primary" id="guideDone" ${run.phase==='setup'||recorded?'disabled':''}>${recorded?'Movement recorded':'I did this movement'}</button><button id="guideFinish">Finish early</button><button id="guideClose">Save & close</button><button id="guideReset">Reset session</button></div>`;
     drawClock();
     $('guideToggle').onclick=()=>{if(run.running){pause();renderGuide();}else resume();};
     $('guideSwap').onclick=()=>{pause();const pool=candidates();const current=pool.findIndex(x=>x.id===e.id);const next=pool[(current+1)%pool.length];if(!next||next.id===e.id)return alert('No other matching movement. You can skip this step.');run.items[run.index]=next.id;run.phase='setup';run.remaining=15;run.elapsed=0;checkpoint();renderGuide();};
     $('guideSkip').onclick=()=>advance(false);
+    $('guidePrevious').onclick=previous;
+    $('guideReset').onclick=resetSession;
     $('guideDone').onclick=()=>advance(true);
     $('guideFinish').onclick=()=>{pause();run.phase='feedback';checkpoint();renderFeedback();};
     $('guideClose').onclick=()=>{pause();dialog.close();refresh();};
   }
   function advance(completed) {
     pause();
-    if(completed && run.elapsed>0)run.steps.push({id:run.items[run.index],seconds:Math.min(45,Math.round(run.elapsed))});
+    if(completed && run.elapsed>0 && !run.steps.some(step=>step.slot===run.index))run.steps.push({id:run.items[run.index],slot:run.index,seconds:Math.min(45,Math.round(run.elapsed))});
     run.index++;run.elapsed=0;
     if(run.index>=run.items.length)run.phase='feedback';else{run.phase='setup';run.remaining=15;}
     checkpoint();renderGuide();
   }
+  function previous(){
+    if(!run?.items || run.index<=0 || run.phase==='feedback')return;
+    pause();run.index--;run.elapsed=0;run.phase='setup';run.remaining=15;checkpoint();renderGuide();
+  }
+  function resetSession(){
+    if(!run?.items)return;
+    pause();
+    if(!confirm('Restart this session from the first card? Its unsaved movements will be cleared. Your saved history will stay unchanged.')){renderGuide();return;}
+    run.index=0;run.steps=[];run.elapsed=0;run.phase='setup';run.remaining=15;run.date=todayKey();run.startedAt=new Date().toISOString();
+    checkpoint();renderGuide();
+  }
+  let swipeStart=null;
+  dialog.addEventListener('pointerdown',event=>{
+    if(!event.isPrimary || event.button!==0 || !event.target.closest('.swipe-card') || !run?.items || run.phase==='feedback')return;
+    swipeStart={x:event.clientX,y:event.clientY,id:event.pointerId};dialog.setPointerCapture(event.pointerId);
+  });
+  dialog.addEventListener('pointercancel',()=>{swipeStart=null;});
+  dialog.addEventListener('pointerup',event=>{
+    if(!swipeStart || event.pointerId!==swipeStart.id)return;
+    const dx=event.clientX-swipeStart.x,dy=event.clientY-swipeStart.y;swipeStart=null;
+    if(dialog.hasPointerCapture(event.pointerId))dialog.releasePointerCapture(event.pointerId);
+    if(!run?.items || run.phase==='feedback' || Math.abs(dx)<65 || Math.abs(dx)<Math.abs(dy)*1.5)return;
+    if(dx<0)advance(false);else previous();
+  });
+  dialog.addEventListener('keydown',event=>{
+    if(!event.target.classList.contains('swipe-card'))return;
+    if(event.key==='ArrowRight'){event.preventDefault();advance(false);}
+    else if(event.key==='ArrowLeft'){event.preventDefault();previous();}
+    else return;
+    dialog.querySelector('.swipe-card')?.focus({preventScroll:true});
+  });
   function renderFeedback() {
     const seconds=run.steps.reduce((n,s)=>n+s.seconds,0);
     dialog.innerHTML=`<span class="eyebrow">A moment to check in</span><h2 id="guideTitle">${run.steps.length?'You made time to move.':'Thanks for checking in.'}</h2><p>${run.steps.length} movements reported · ${Math.round(seconds)} seconds of activity.</p>
@@ -195,7 +233,7 @@ const Habit = (() => {
   window.addEventListener('load',()=>{
     refresh();
     document.querySelector('footer').textContent='Body Tracker 3 · Small steps, steady progress';
-    document.getElementById('appVersion').textContent='Version 3.1.0';
+    document.getElementById('appVersion').textContent='Version 3.2.0';
     document.querySelector('[data-tab="progress"]').addEventListener('click',renderHistory);
   });
   return {refresh,candidates,activeDates,weekDates,boxingComplete,isActive:()=>!!run,escape};
