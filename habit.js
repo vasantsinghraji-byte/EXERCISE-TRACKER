@@ -31,7 +31,7 @@ const Habit = (() => {
       if((light || strengthRecently) && e.category==='Strength') return false;
       if(p.level==='Beginning' && e.id==='pushup') return false;
       return true;
-    }).sort((a,b)=>Number(b.category===p.focus)-Number(a.category===p.focus));
+    }).sort((a,b)=>Number(b.category===p.focus)-Number(a.category===p.focus)||Number(get('favoriteExercises',[]).includes(b.id))-Number(get('favoriteExercises',[]).includes(a.id)));
   }
   function activeDates(history=sessions()) {
     const dates=new Set(history.filter(s=>s.steps.length).map(s=>s.date));
@@ -102,14 +102,18 @@ const Habit = (() => {
     document.dispatchEvent(new Event('habitupdated'));
   }
   function checkpoint() { if(run) persist('habitDraft',{...run,running:false}); }
-  function start() {
+  function start(selection=null) {
     pauseTimer();
     const draft=get('habitDraft',null);
+    if(selection?.items && draft){alert('Resume and finish or discard your existing session first.');return;}
     if(draft) {run=draft;run.running=false;if(run.items)run.steps=run.steps.map(step=>({...step,slot:step.slot??run.items.indexOf(step.id)}));}
     else {
       const pool=candidates(); if(!pool.length) return alert('No movements match these preferences. Adjust them or rest today.');
       const p=prefs();
-      run={id:crypto.randomUUID(),title:`${p.minutes}-minute ${p.focus.toLowerCase()}`,date:todayKey(),startedAt:new Date().toISOString(),index:0,phase:'setup',remaining:15,running:false,steps:[],elapsed:0,items:Array.from({length:p.minutes},(_,i)=>pool[i%pool.length].id)};
+      const items=selection?.items?selection.items.filter(id=>pool.some(e=>e.id===id)).slice(0,20):Array.from({length:p.minutes},(_,i)=>pool[i%pool.length].id);
+      if(!items.length){alert('These movements do not match today’s readiness or preferences. Update your check-in or choose another routine.');return;}
+      if(selection?.items && items.length!==selection.items.length)alert('Some movements were left out to match today’s readiness and preferences. Your saved routine stays unchanged.');
+      run={id:crypto.randomUUID(),title:selection?.title||`${p.minutes}-minute ${p.focus.toLowerCase()}`,date:todayKey(),startedAt:new Date().toISOString(),index:0,phase:'setup',remaining:15,running:false,steps:[],elapsed:0,items};
       checkpoint();
     }
     if(!dialog.open) dialog.showModal();
@@ -145,7 +149,9 @@ const Habit = (() => {
       <progress class="guide-track" value="${run.index}" max="${run.items.length}" aria-label="Session progress"></progress>
       <div class="swipe-card" tabindex="0" role="group" aria-label="Exercise card. Swipe left for next, right for previous, or use arrow keys.">
       <div class="swipe-hint"><span>← Previous</span><span>Swipe to explore</span><span>Next →</span></div>
-      <h2 id="guideTitle" tabindex="-1">${escape(e.name)}</h2><p>${escape(e.motion)}</p>
+      <h2 id="guideTitle" tabindex="-1">${escape(e.name)}</h2>
+      <button class="favorite-toggle" data-favorite="${e.id}" aria-pressed="${get('favoriteExercises',[]).includes(e.id)}">${get('favoriteExercises',[]).includes(e.id)?'♥ Saved favorite':'♡ Save favorite'}</button>
+      ${Demos.card(e.id)}<p>${escape(e.motion)}</p>
       <p class="quiet">45-second movement window. Use comfortable repetitions; for two-sided movements, split the time between sides. Finishing the full dose is not required.</p>
       <div id="guideClock" class="guide-clock" aria-label="Seconds remaining"></div>
       <p class="quiet">${recorded?'Already recorded for this session. Reviewing it earns no duplicate credit.':'Swiping changes the card without recording activity. Stop or skip if uncomfortable.'}</p>
@@ -183,7 +189,7 @@ const Habit = (() => {
   }
   let swipeStart=null;
   dialog.addEventListener('pointerdown',event=>{
-    if(!event.isPrimary || event.button!==0 || !event.target.closest('.swipe-card') || !run?.items || run.phase==='feedback')return;
+    if(!event.isPrimary || event.button!==0 || event.target.closest('button,a,input,select,summary,details') || !event.target.closest('.swipe-card') || !run?.items || run.phase==='feedback')return;
     swipeStart={x:event.clientX,y:event.clientY,id:event.pointerId};dialog.setPointerCapture(event.pointerId);
   });
   dialog.addEventListener('pointercancel',()=>{swipeStart=null;});
@@ -233,10 +239,10 @@ const Habit = (() => {
   window.addEventListener('load',()=>{
     refresh();
     document.querySelector('footer').textContent='Body Tracker 3 · Small steps, steady progress';
-    document.getElementById('appVersion').textContent='Version 3.2.0';
+    document.getElementById('appVersion').textContent='Version 3.3.0';
     document.querySelector('[data-tab="progress"]').addEventListener('click',renderHistory);
   });
-  return {refresh,candidates,activeDates,weekDates,boxingComplete,isActive:()=>!!run,escape};
+  return {refresh,candidates,activeDates,weekDates,boxingComplete,isActive:()=>!!run,escape,startRoutine:(title,items)=>start({title,items})};
 })();
 
 // Refresh companion data after legacy check-ins and manual exercise logging.
